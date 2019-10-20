@@ -1,3 +1,12 @@
+Hi, I'm Carlos!
+
+This is my personal website. At the moment I'm using github to host it, so please don't use it :)
+In case you have any questions please contact me via the social networks on the website.
+
+Feel free to check out the base HTML template, you can find details on the license below:
+
+TEMPLATE LICENSE
+
 Read Only by HTML5 UP
 html5up.net | @ajlkn
 Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
