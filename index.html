@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Carlos Carvalhal</title>
+  <link rel="icon" type="image/svg+xml" href="favicon.svg"/>
+  <link rel="icon" type="image/png" href="favicon.png"/>
+  <link rel="apple-touch-icon" href="apple-touch-icon.png"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+
+  <!-- ── NAV ────────────────────────────── -->
+  <nav id="nav">
+    <div class="nav-logo">CC</div>
+    <div class="nav-links" id="nav-links">
+      <a href="#about">About</a>
+      <a href="#experience">Experience</a>
+      <a href="#background">Background</a>
+      <a href="#posts">Posts</a>
+      <a href="#contact">Contact</a>
+    </div>
+    <button class="nav-toggle" id="nav-toggle" aria-label="Toggle menu">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+
+  <!-- ── HERO ───────────────────────────── -->
+  <section id="hero">
+    <canvas id="particle-canvas"></canvas>
+    <div class="hero-content">
+      <p class="hero-eyebrow">Portugal · Remote</p>
+      <h1 class="hero-name">Carlos<br>Carvalhal</h1>
+      <p class="hero-sub" id="hero-sub"></p>
+      <div class="hero-cta">
+        <a href="#about" class="btn-primary">Explore</a>
+        <a href="#contact" class="btn-ghost">Get in touch</a>
+      </div>
+    </div>
+    <div class="hero-scroll-hint">
+      <span>scroll</span>
+      <div class="scroll-bar"></div>
+    </div>
+  </section>
+
+  <!-- ── ABOUT ──────────────────────────── -->
+  <section id="about">
+    <div class="container">
+      <span class="section-tag">001 · About</span>
+      <div class="about-grid">
+        <div class="about-text reveal">
+          <h2>A career spent at the intersection of complex systems and the people who use them.</h2>
+          <p>From biomedical research in Portugal to healthcare tech in London, from luxury fashion in Porto to automotive e-commerce across Europe — I've built a career on making things connect: systems, teams, and ideas.</p>
+          <p>I specialise in system integrations and technical leadership. Currently leading supplier integrations at AUTODOC, one of Europe's largest automotive parts platforms. Before that, nearly six years building and scaling integration infrastructure at FARFETCH.</p>
+        </div>
+        <div class="about-stats">
+          <div class="stat-card reveal">
+            <div class="stat-num" data-dynamic="career-years" data-suffix="+">0</div>
+            <div class="stat-label">Years in industry</div>
+          </div>
+          <div class="stat-card reveal">
+            <div class="stat-num" data-target="5">0</div>
+            <div class="stat-label">Companies</div>
+          </div>
+          <div class="stat-card reveal">
+            <div class="stat-num" data-target="50" data-suffix="+">0</div>
+            <div class="stat-label">Integrations</div>
+          </div>
+          <div class="stat-card reveal">
+            <div class="stat-num" data-dynamic="courses-count" data-suffix="+">0</div>
+            <div class="stat-label">Courses</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── EXPERIENCE ────────────────────── -->
+  <section id="experience">
+    <div class="container">
+      <span class="section-tag">002 · Experience</span>
+      <h2 class="section-heading">Journey</h2>
+      <!-- Entries injected from experience-data.js -->
+      <div class="timeline" id="timeline"></div>
+    </div>
+  </section>
+
+  <!-- ── BACKGROUND ────────────────────── -->
+  <section id="background">
+    <div class="container">
+      <span class="section-tag">003 · Background</span>
+      <h2 class="section-heading">Learning</h2>
+
+      <!-- Formal degrees -->
+      <div class="bg-degrees">
+        <div class="edu-card reveal">
+          <div class="edu-year">2011 – 2013</div>
+          <div class="edu-school">Universidade do Minho</div>
+          <div class="edu-degree">MSc · Informatics Engineering</div>
+          <div class="edu-detail">Specialisations in Intelligent Systems and Bioinformatics</div>
+        </div>
+        <div class="edu-card reveal">
+          <div class="edu-year">2007 – 2011</div>
+          <div class="edu-school">IP Bragança</div>
+          <div class="edu-degree">Degree · Biomedical Engineering</div>
+          <div class="edu-detail">Erasmus exchange year at Politecnico di Torino, Italy</div>
+        </div>
+      </div>
+
+      <!-- ─ Continuous Learning ─────────── -->
+      <div class="certs-section">
+        <div class="certs-header">
+          <span class="certs-label">Continuous learning</span>
+          <span class="certs-count" id="certs-count">12 courses</span>
+        </div>
+
+        <!-- Cards are rendered dynamically from courses-data.js -->
+        <div class="certs-grid" id="certs-grid"></div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ── POSTS ─────────────────────────── -->
+  <section id="posts">
+    <div class="container">
+      <span class="section-tag">004 · Posts</span>
+      <h2 class="section-heading">Posts</h2>
+
+      <!-- Content injected from posts-data.js (empty array → placeholder shown) -->
+      <div id="posts-container"></div>
+
+    </div>
+  </section>
+
+  <!-- ── CONTACT ────────────────────────── -->
+  <section id="contact">
+    <div class="container">
+      <span class="section-tag">005 · Contact</span>
+      <div class="contact-inner">
+        <h2 class="contact-heading">Let's connect.</h2>
+        <p class="contact-sub">Whether it's a project, an opportunity, or just a conversation.</p>
+        <div class="contact-links">
+          <a href="https://www.linkedin.com/in/carlos-carvalhal/" target="_blank" rel="noopener" class="contact-btn">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+            LinkedIn
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="container footer-inner">
+      <span>Carlos Carvalhal · Portugal</span>
+      <span class="footer-konami" id="footer-konami">↑ ↑ ↓ ↓ ← → ← → B A</span>
+    </div>
+  </footer>
+
+  <script src="courses-data.js"></script>
+  <script src="experience-data.js"></script>
+<script src="posts-data.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>

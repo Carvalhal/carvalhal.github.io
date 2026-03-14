@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Courses · Carlos Carvalhal</title>
+  <link rel="icon" type="image/svg+xml" href="favicon.svg"/>
+  <link rel="icon" type="image/png" href="favicon.png"/>
+  <link rel="apple-touch-icon" href="apple-touch-icon.png"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+
+  <!-- ── NAV ────────────────────────────── -->
+  <nav id="nav">
+    <a href="index.html" class="nav-logo">CC</a>
+    <div class="nav-links" id="nav-links">
+      <a href="index.html#about">About</a>
+      <a href="index.html#experience">Experience</a>
+      <a href="index.html#background">Background</a>
+      <a href="index.html#posts">Posts</a>
+      <a href="index.html#contact">Contact</a>
+    </div>
+    <button class="nav-toggle" id="nav-toggle" aria-label="Toggle menu">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+
+  <!-- ── PAGE HEADER ───────────────────── -->
+  <section class="courses-hero">
+    <div class="container">
+      <a href="index.html#background" class="back-link">← Back to background</a>
+      <span class="section-tag">Continuous Learning</span>
+      <h1 class="courses-heading">All Courses</h1>
+      <p class="courses-sub" id="courses-sub">Loading courses…</p>
+    </div>
+  </section>
+
+  <!-- ── COURSES (rendered by JS) ─────── -->
+  <section class="courses-list">
+    <div class="container" id="courses-container">
+      <!-- Year groups are injected here by script -->
+    </div>
+  </section>
+
+  <footer>
+    <div class="container footer-inner">
+      <span>Carlos Carvalhal · Portugal</span>
+    </div>
+  </footer>
+
+  <!-- Data + renderer -->
+  <script src="courses-data.js"></script>
+  <script>
+    /* ── Render all courses grouped by year ── */
+    (function renderCoursesPage() {
+      const container = document.getElementById('courses-container');
+      const subEl     = document.getElementById('courses-sub');
+
+      if (!container || typeof COURSES === 'undefined') return;
+
+      // Update subtitle with real count
+      subEl.textContent = COURSES.length + ' courses completed across system design, engineering, leadership, and productivity.';
+
+      // SVG external-link icon
+      const extIcon = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round">
+        <path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/>
+        <polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/>
+      </svg>`;
+
+      // Group courses by year (preserves order — newest first)
+      const byYear = [];
+      const seen   = {};
+      COURSES.forEach(course => {
+        if (!seen[course.year]) {
+          seen[course.year] = [];
+          byYear.push({ year: course.year, items: seen[course.year] });
+        }
+        seen[course.year].push(course);
+      });
+
+      // Render each year group
+      byYear.forEach(group => {
+        const groupEl = document.createElement('div');
+        groupEl.className = 'course-year-group';
+
+        const labelEl = document.createElement('div');
+        labelEl.className = 'course-year-label';
+        labelEl.textContent = group.year;
+        groupEl.appendChild(labelEl);
+
+        const gridEl = document.createElement('div');
+        gridEl.className = 'course-cards-grid';
+
+        group.items.forEach(course => {
+          const card = document.createElement('div');
+          card.className = 'course-card reveal';
+          card.innerHTML =
+            `<div class="course-platform">${course.platform}</div>`
+            + `<div class="course-name">${course.name}</div>`
+            + `<div class="course-date">${course.date}</div>`
+            + `<a href="${getCertUrl(course)}" target="_blank" rel="noopener" class="course-cert-link">`
+            + extIcon
+            + ` View certificate</a>`;
+          gridEl.appendChild(card);
+        });
+
+        groupEl.appendChild(gridEl);
+        container.appendChild(groupEl);
+      });
+
+      // Scroll reveal
+      const obs = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (!entry.isIntersecting) return;
+          const siblings = Array.from(entry.target.parentElement.children)
+            .filter(el => el.classList.contains('reveal'));
+          const idx = siblings.indexOf(entry.target);
+          setTimeout(() => entry.target.classList.add('visible'), Math.min(idx * 90, 400));
+          obs.unobserve(entry.target);
+        });
+      }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+
+      container.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+    })();
+
+    /* ── Nav ── */
+    const nav    = document.getElementById('nav');
+    const toggle = document.getElementById('nav-toggle');
+    const links  = document.getElementById('nav-links');
+
+    window.addEventListener('scroll', () => {
+      nav.classList.toggle('scrolled', window.scrollY > 40);
+    }, { passive: true });
+
+    toggle.addEventListener('click', () => {
+      const open = links.classList.toggle('open');
+      toggle.setAttribute('aria-expanded', open);
+    });
+    links.querySelectorAll('a').forEach(a => {
+      a.addEventListener('click', () => {
+        links.classList.remove('open');
+        toggle.setAttribute('aria-expanded', 'false');
+      });
+    });
+    document.addEventListener('click', e => {
+      if (!nav.contains(e.target)) {
+        links.classList.remove('open');
+        toggle.setAttribute('aria-expanded', 'false');
+      }
+    });
+  </script>
+
+</body>
+</html>

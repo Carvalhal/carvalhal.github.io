@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32">
+  <!-- Background -->
+  <rect width="32" height="32" rx="6" fill="#04080F"/>
+  <!-- Subtle accent border -->
+  <rect width="32" height="32" rx="6" fill="none" stroke="#4A90FF" stroke-width="1.2" stroke-opacity="0.35"/>
+  <!-- CC text — monospaced, matching nav logo colour -->
+  <text
+    x="16" y="22"
+    font-family="'Courier New', Courier, monospace"
+    font-size="13.5"
+    font-weight="700"
+    fill="#4A90FF"
+    text-anchor="middle"
+    letter-spacing="0.5"
+  >CC</text>
+</svg>

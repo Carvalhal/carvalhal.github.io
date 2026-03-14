@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Writing · Carlos Carvalhal</title>
+  <link rel="icon" type="image/svg+xml" href="favicon.svg"/>
+  <link rel="icon" type="image/png" href="favicon.png"/>
+  <link rel="apple-touch-icon" href="apple-touch-icon.png"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+
+  <!-- ── NAV ────────────────────────────── -->
+  <nav id="nav">
+    <a href="index.html" class="nav-logo">CC</a>
+    <div class="nav-links" id="nav-links">
+      <a href="index.html#about">About</a>
+      <a href="index.html#experience">Experience</a>
+      <a href="index.html#background">Background</a>
+      <a href="index.html#posts">Posts</a>
+      <a href="index.html#contact">Contact</a>
+    </div>
+    <button class="nav-toggle" id="nav-toggle" aria-label="Toggle menu">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+
+  <!-- ── PAGE HEADER ───────────────────── -->
+  <section class="courses-hero">
+    <div class="container">
+      <a href="index.html#posts" class="back-link">← Back to posts</a>
+      <span class="section-tag">Posts</span>
+      <h1 class="courses-heading">All Posts</h1>
+      <p class="courses-sub" id="posts-page-sub">Loading…</p>
+    </div>
+  </section>
+
+  <!-- ── POSTS (rendered by JS) ────────── -->
+  <section class="posts-page-list">
+    <div class="container" id="posts-page-container"></div>
+  </section>
+
+  <footer>
+    <div class="container footer-inner">
+      <span>Carlos Carvalhal · Portugal</span>
+    </div>
+  </footer>
+
+  <!-- Data + renderer -->
+  <script src="posts-data.js"></script>
+  <script>
+    /* ── Helpers ── */
+    function isTweet(url) {
+      return /twitter\.com|x\.com/.test(url);
+    }
+    function getDomain(url) {
+      try { return new URL(url).hostname.replace(/^www\./, ''); }
+      catch { return url; }
+    }
+
+    /* ── Render all posts ── */
+    (function renderPostsPage() {
+      const container = document.getElementById('posts-page-container');
+      const subEl     = document.getElementById('posts-page-sub');
+      if (!container || typeof POSTS === 'undefined') return;
+
+      const count = POSTS.length;
+      subEl.textContent = count + ' post' + (count !== 1 ? 's' : '');
+
+      let hasTweets = false;
+
+      POSTS.forEach(post => {
+        const slug = 'post-' + post.title
+          .toLowerCase()
+          .replace(/[^a-z0-9]+/g, '-')
+          .replace(/^-|-$/g, '');
+
+        // Build the bottom embed — tweet or external link card
+        let embedHTML;
+        if (isTweet(post.url)) {
+          hasTweets = true;
+          embedHTML =
+            `<div class="post-tweet-embed">`
+            + `<blockquote class="twitter-tweet" data-dnt="true" data-theme="dark">`
+            + `<a href="${post.url}"></a>`
+            + `</blockquote>`
+            + `</div>`;
+        } else {
+          embedHTML =
+            `<a href="${post.url}" target="_blank" rel="noopener" class="post-link-card">`
+            + `<div class="post-link-card-body">`
+            + `<div class="post-link-card-domain">${getDomain(post.url)}</div>`
+            + `<div class="post-link-card-title">${post.title}</div>`
+            + `</div>`
+            + `<div class="post-link-card-arrow">→</div>`
+            + `</a>`;
+        }
+
+        const entry = document.createElement('div');
+        entry.className = 'post-page-entry reveal';
+        entry.id = slug;
+        entry.innerHTML =
+          `<div class="post-page-meta">`
+          + `<span class="post-date">${post.date}</span>`
+          + `<span class="post-tag">${post.tag}</span>`
+          + `</div>`
+          + `<h2 class="post-page-title">${post.title}</h2>`
+          + `<p class="post-page-excerpt">${post.excerpt}</p>`
+          + embedHTML;
+
+        container.appendChild(entry);
+      });
+
+      // Load Twitter widget only if there are tweets on the page
+      if (hasTweets) {
+        const twitterScript = document.createElement('script');
+        twitterScript.async = true;
+        twitterScript.src = 'https://platform.twitter.com/widgets.js';
+        twitterScript.charset = 'utf-8';
+        document.body.appendChild(twitterScript);
+      }
+
+      // Scroll reveal
+      const obs = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (!entry.isIntersecting) return;
+          const siblings = Array.from(entry.target.parentElement.children)
+            .filter(el => el.classList.contains('reveal'));
+          const idx = siblings.indexOf(entry.target);
+          setTimeout(() => entry.target.classList.add('visible'), Math.min(idx * 90, 400));
+          obs.unobserve(entry.target);
+        });
+      }, { threshold: 0.05, rootMargin: '0px 0px -40px 0px' });
+
+      container.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+
+      // If the URL has a hash, scroll to the matching post after tweets load
+      if (window.location.hash) {
+        const target = document.querySelector(window.location.hash);
+        if (target) setTimeout(() => target.scrollIntoView({ behavior: 'smooth', block: 'start' }), 800);
+      }
+    })();
+
+    /* ── Nav ── */
+    const nav    = document.getElementById('nav');
+    const toggle = document.getElementById('nav-toggle');
+    const links  = document.getElementById('nav-links');
+
+    window.addEventListener('scroll', () => {
+      nav.classList.toggle('scrolled', window.scrollY > 40);
+    }, { passive: true });
+
+    toggle.addEventListener('click', () => {
+      const open = links.classList.toggle('open');
+      toggle.setAttribute('aria-expanded', open);
+    });
+    links.querySelectorAll('a').forEach(a => {
+      a.addEventListener('click', () => {
+        links.classList.remove('open');
+        toggle.setAttribute('aria-expanded', 'false');
+      });
+    });
+    document.addEventListener('click', e => {
+      if (!nav.contains(e.target)) {
+        links.classList.remove('open');
+        toggle.setAttribute('aria-expanded', 'false');
+      }
+    });
+  </script>
+
+</body>
+</html>
