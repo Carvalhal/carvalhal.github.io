@@ -469,13 +469,9 @@ function registerReveal(root) {
   const overlay = document.createElement('div');
   overlay.id    = 'konami-overlay';
   overlay.innerHTML = `
-    <h3>// ASAP — 2012</h3>
+    <h3>Ah, you're my kind of person.</h3>
     <p>
-      Before the career, there was research. In 2012, Carlos co-authored
-      <em>ASAP: An Automated System for Scientific Literature Search in PubMed Using Web Agents</em>,
-      published by Springer Berlin Heidelberg in Advances in Intelligent and Soft Computing.
-      The system built web agents to automatically crawl PubMed and deliver relevant results to researchers weekly.
-      The career in integrations started earlier than it might seem.
+      Nothing to see here. For now.
     </p>
     <button id="konami-close">Close</button>
   `;
